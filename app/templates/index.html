@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Khamsa / Trivia Scoreboard</title>
+  <link rel="manifest" href="/static/manifest.json">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="stylesheet" href="/static/css/style.css">
+  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+</head>
+<body>
+  <div class="top-bar">
+    <button class="lang-btn active" data-lang="en" onclick="setLanguage('en')">EN</button>
+    <button class="lang-btn" data-lang="az" onclick="setLanguage('az')">AZ</button>
+  </div>
+
+  <!-- Role Selection Screen -->
+  <div id="landingView" class="view active">
+    <div class="card">
+      <h1 data-i18n="appTitle">Trivia Scoreboard</h1>
+      <p data-i18n="tagline">Choose your role to continue</p>
+      <button id="hostSelectBtn" class="btn-primary" data-i18n="hostBtn">Host Game</button>
+      <button id="playerSelectBtn" class="btn-secondary" data-i18n="playerBtn">Join as Player</button>
+    </div>
+  </div>
+
+  <!-- Player Login Screen -->
+  <div id="playerJoinView" class="view">
+    <div class="card">
+      <h1 data-i18n="joinTitle">Join Game</h1>
+      <input type="text" id="roomInput" class="input-field" maxlength="4" data-i18n="roomPlaceholder" placeholder="4-Digit Room Code">
+      <input type="text" id="nameInput" class="input-field" maxlength="15" data-i18n="namePlaceholder" placeholder="Your Nickname">
+      <button id="joinRoomBtn" class="btn-primary" data-i18n="joinSubmit">Enter Room</button>
+      <button onclick="switchView('landingView')" class="btn-secondary" data-i18n="back">Back</button>
+    </div>
+  </div>
+
+  <!-- Player Buzzer Screen (iOS PWA Ready) -->
+  <div id="playerBuzzerView" class="view">
+    <div class="player-container">
+      <div class="player-info-card">
+        <h3 id="playerGreeting"></h3>
+        <p><span data-i18n="room">Room</span>: <strong id="playerRoomCode" style="color:#78e7de;"></strong></p>
+      </div>
+      <button id="mainBuzzer" class="buzzer-btn grey"></button>
+      <h3 id="buzzerStatusText" style="text-align:center; min-height: 48px;"></h3>
+    </div>
+  </div>
+
+  <!-- Host Dashboard (PyQt Replica) -->
+  <div id="hostView" class="view">
+    <div class="host-dashboard">
+      <div class="host-top">
+        <div class="room-tag"><span data-i18n="room">Room</span>: <span id="hostRoomCode"></span></div>
+        <button id="shareLinkBtn" class="lang-btn active" data-i18n="shareLink">Copy Link</button>
+      </div>
+
+      <div class="host-grid">
+        <div class="side-col">
+          <button id="newGameBtn" class="action-box" style="height:140px; font-size:1.4rem;" data-i18n="newGame">New Game</button>
+          <button id="newTopicBtn" class="action-box" style="height:140px; font-size:1.4rem;" data-i18n="newTopic">New Topic</button>
+        </div>
+
+        <div class="mid-col">
+          <div class="multipliers">
+            <button class="mult-btn active" data-idx="0">1x</button>
+            <button class="mult-btn" data-idx="1">2x</button>
+            <button class="mult-btn" data-idx="2">3x</button>
+            <button class="mult-btn" data-idx="3">4x</button>
+          </div>
+          <div class="question-banner">
+            <span data-i18n="questionVal">Question Value</span>: <span id="hostQuestionVal">100</span>
+          </div>
+          <div id="playersList" class="players-list"></div>
+        </div>
+
+        <div class="side-col">
+          <button id="nextQBtn" class="action-box btn-big-q" data-i18n="newQuestion">New&#10;Question</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/js/i18n.js"></script>
+  <script src="/static/js/app.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/static/js/sw.js');
+    }
+  </script>
+</body>
+</html>

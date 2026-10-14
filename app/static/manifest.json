@@ -1,0 +1,15 @@
+{
+  "name": "Play Khamsa",
+  "short_name": "Khamsa",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a1930",
+  "theme_color": "#0a1930",
+  "icons": [
+    {
+      "src": "/static/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}
